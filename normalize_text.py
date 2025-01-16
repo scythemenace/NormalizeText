@@ -3,6 +3,8 @@ import sys
 import nltk
 import string
 
+# nltk.download("stopwords")
+
 file = open(sys.argv[1])
 content = file.read()
 file.close()
@@ -62,3 +64,15 @@ if stopwords:
 
 if punctuation:
     tokens = [token for token in tokens if token not in string.punctuation]
+
+word_count = {}
+
+for token in tokens:
+    if token in word_count:
+        word_count[token] += 1
+    else:
+        word_count[token] = 1
+
+# print(word_count)
+
+print("’" in word_count)
