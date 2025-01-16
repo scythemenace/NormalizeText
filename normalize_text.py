@@ -64,7 +64,8 @@ if stopwords:
     tokens = [token for token in tokens if token.lower() not in stopwords]
 
 if punctuation:
-    tokens = [token for token in tokens if token not in ",.;“’--”!*:?...."]
+    extended_punctuation = string.punctuation + ",.;“’--”!*:?...."
+    tokens = [token for token in tokens if token not in extended_punctuation]
 
 word_count = {}
 
