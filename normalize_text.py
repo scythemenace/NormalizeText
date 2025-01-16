@@ -11,9 +11,9 @@ file.close()
 
 stemmer = None
 lemmatizer = None
-lower = True
+lower = False
 stopwords = None
-punctuation = None
+punctuation = False
 
 for arg in sys.argv:
     match arg:
@@ -25,9 +25,10 @@ for arg in sys.argv:
             lower = True
         case "-st":
             stopwords = nltk.corpus.stopwords.words("english")
-        case "p":
+        case "-p":
             punctuation = True
 
+# Tokenize
 tokens = nltk.word_tokenize(content)
 
 if lower:
@@ -63,7 +64,7 @@ if stopwords:
     tokens = [token for token in tokens if token.lower() not in stopwords]
 
 if punctuation:
-    tokens = [token for token in tokens if token not in string.punctuation]
+    tokens = [token for token in tokens if token not in ",.;“’--”!*:?...."]
 
 word_count = {}
 
@@ -77,3 +78,5 @@ sorted_word_count = sorted(word_count.items(), key=lambda kv: kv[1], reverse=Tru
 
 for token, count in sorted_word_count:
     print(token, count)
+
+# print("Number of tokens : " + str(sum(word_count.values())))
