@@ -73,6 +73,7 @@ for token in tokens:
     else:
         word_count[token] = 1
 
-# print(word_count)
+sorted_word_count = sorted(word_count.items(), key=lambda kv: kv[1], reverse=True)
 
-print("’" in word_count)
+for token, count in sorted_word_count:
+    print(token, count)
