@@ -3,6 +3,9 @@ import sys
 import nltk
 import string
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 # nltk.download("stopwords")
 
 file = open(sys.argv[1])
@@ -77,7 +80,22 @@ for token in tokens:
 
 sorted_word_count = sorted(word_count.items(), key=lambda kv: kv[1], reverse=True)
 
-for token, count in sorted_word_count:
-    print(token, count)
-
 # print("Number of tokens : " + str(sum(word_count.values())))
+
+s_tokens = []
+s_count = []
+
+for token, count in sorted_word_count:
+    s_tokens.append(token)
+    s_count.append(count)
+
+    # print(token, count)
+
+plt.figure(figsize=(10, 6))
+plt.bar(s_tokens, s_count)
+plt.xscale("log")
+plt.yscale("log")
+plt.title("Word Frequency", fontsize=14)
+plt.xlabel("Tokens", fontsize=12)
+plt.ylabel("Frequency", fontsize=12)
+plt.show()
