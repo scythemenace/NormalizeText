@@ -21,12 +21,12 @@ import nltk
 import string
 import matplotlib.pyplot as plt
 
-# nltk.download("stopwords")
-# nltk.download('punkt')
-# nltk.download('wordnet')
-# nltk.download('omw-1.4')
-# nltk.download('stopwords')
-# nltk.download('averaged_perceptron_tagger')
+nltk.download("stopwords")
+nltk.download("punkt")
+nltk.download("wordnet")
+nltk.download("omw-1.4")
+nltk.download("stopwords")
+nltk.download("averaged_perceptron_tagger")
 
 # Opening the file based on the text argument
 try:
