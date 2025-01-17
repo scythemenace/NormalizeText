@@ -1,3 +1,20 @@
+"""
+Name: normalize_text.py
+Description: text file/corpus preprocessor and plotter
+Instructions to run:
+    python normalize_text.py myfile.txt <your-options>
+
+    If it doesn't work try writing:
+        python3 normalize_text.py myfile.txt <your-options>
+
+    <your-options> for preprocessors could be:
+        -s for stemmer
+        -lr for lemmatizer
+        -l for lowercase
+        -st for stopwords
+        -p for punctuation
+"""
+
 # Taking file input from command line
 import sys
 import nltk
@@ -5,6 +22,11 @@ import string
 import matplotlib.pyplot as plt
 
 # nltk.download("stopwords")
+# nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('omw-1.4')
+# nltk.download('stopwords')
+# nltk.download('averaged_perceptron_tagger')
 
 # Opening the file based on the text argument
 try:
@@ -18,15 +40,15 @@ try:
     content = file.read()
     file.close()
 
-    # Initializing the pre-processors with empty values
+    # Initializing the preprocessors with empty values
     stemmer = None
     lemmatizer = None
     lower = False
     stopwords = None
     punctuation = False
 
-    # Assigning values to the pre-processors which had their flags given by the user
-    for arg in sys.argv:
+    # Assigning values to the preprocessors which had their flags given by the user
+    for arg in sys.argv[2:]:
         match arg:
             case "-s":
                 # If flag -s was given then a stemmer object would be assigned to the stemmer variable
@@ -43,6 +65,10 @@ try:
             case "-p":
                 # If flag -p was given then the punctuation flag would be assigned a value of True
                 punctuation = True
+            case _:
+                raise Exception(
+                    "The flags entered by the user are either incorrect or empty. Should be of the form -l, -lr, -s, -st or -p"
+                )
 
     # Tokenize
     tokens = nltk.word_tokenize(content)
@@ -56,7 +82,12 @@ try:
         tokens = [stemmer.stem(token) for token in tokens]
 
     if lemmatizer:
-        # For the lemmatizer we're also performing POS tagging, reasons for which are mentioned in the pdf document
+        # For the lemmatizer we're also performing POS tagging, reasons for which are mentioned in detail in the discussion section of the report
+
+        """
+            This function takes in a tag which could be of the form JJ, VB, NN, RB, etc. and returns an ntlk.corpus.wordnet form
+            to put inside the pos parameter of the lemmatize object.
+        """
 
         def get_wordnet_pos(tag):
             if tag.startswith("J"):
@@ -70,8 +101,10 @@ try:
             else:
                 return None
 
+        # Creates a tuple which has the token and its Part Of Speech tag
         pos_tags = nltk.pos_tag(tokens)
 
+        # Unpacking the pos_tags tuple for token, tag and then feeding the tag as an input to the get_wordnet_pos() in order to retrieve the pos value which will be used inside the lemmatizer
         tokens = [
             lemmatizer.lemmatize(token, pos=pos) if pos else token
             for token, tag in pos_tags
@@ -99,27 +132,48 @@ try:
     # Sorting the tokens according to their count
     sorted_word_count = sorted(word_count.items(), key=lambda kv: kv[1], reverse=True)
 
-    # print("Number of tokens : " + str(sum(word_count.values())))      # Uncomment if you want to check the number of tokens remaining after pre-processing
+    # print("Number of tokens : " + str(sum(word_count.values())))      # Uncomment if you want to check the number of tokens remaining after preprocessing
 
     # Creating two arrays which would be used to plot data
-    s_tokens = []
-    s_count = []
+    first_tokens = []
+    first_count = []
+    last_tokens = []
+    last_count = []
+
+    iterator_for_last_count = 0
 
     for token, count in sorted_word_count:
-        s_tokens.append(token)
-        s_count.append(count)
+        iterator_for_last_count += 1
+
+        if len(first_tokens) < 25:
+            first_tokens.append(token)
+
+        if len(first_count) < 25:
+            first_count.append(count)
+
+        if iterator_for_last_count >= (len(sorted_word_count) - 25):
+            last_tokens.append(token)
+            last_count.append(count)
 
         # token, count is the main output of this file
         print(token, count)
 
-    # Plotting the data and using a log-scale for the x and y axes
-    plt.figure(figsize=(10, 6))
-    plt.bar(s_tokens, s_count)
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.title("Word Frequency", fontsize=14)
-    plt.xlabel("Tokens", fontsize=12)
-    plt.ylabel("Frequency", fontsize=12)
+    # Plotting the data for the top 25 word frequencies
+    plt.figure(figsize=(13, 8))
+    plt.bar(first_tokens, first_count)
+    plt.title("Word frequency for the top 25 words", fontsize=14)
+    plt.xlabel("Tokens", fontsize=8)
+    plt.ylabel("Frequency", fontsize=8)
+    plt.xticks(rotation=45, ha="right")
+    plt.show()
+
+    # Plotting the data for the last 25 word frequencies
+    plt.figure(figsize=(13, 8))
+    plt.bar(last_tokens, last_count)
+    plt.title("Word frequency for the bottom 25 words", fontsize=14)
+    plt.xlabel("Tokens", fontsize=8)
+    plt.ylabel("Frequency", fontsize=8)
+    plt.xticks(rotation=45, ha="right")
     plt.show()
 
 
