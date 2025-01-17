@@ -143,8 +143,6 @@ try:
     iterator_for_last_count = 0
 
     for token, count in sorted_word_count:
-        iterator_for_last_count += 1
-
         if len(first_tokens) < 25:
             first_tokens.append(token)
 
@@ -156,7 +154,21 @@ try:
             last_count.append(count)
 
         # token, count is the main output of this file
-        print(token, count)
+        if iterator_for_last_count < 25 or iterator_for_last_count >= (
+            len(sorted_word_count) - 25
+        ):
+            if iterator_for_last_count == 0:
+                print("The top 25 tokens with the highest word count:")
+                print("             ---------------                  ")
+
+            if iterator_for_last_count == len(sorted_word_count) - 25:
+                print(" ")
+                print("The bottom 25 tokens with the lowest word count:")
+                print("             ---------------                  ")
+
+            print(token, count)
+
+        iterator_for_last_count += 1
 
     # Plotting the data for the top 25 word frequencies
     plt.figure(figsize=(13, 8))
