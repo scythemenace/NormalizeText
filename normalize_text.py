@@ -65,10 +65,6 @@ try:
             case "-p":
                 # If flag -p was given then the punctuation flag would be assigned a value of True
                 punctuation = True
-            case _:
-                raise Exception(
-                    "The flags entered by the user are either incorrect or empty. Should be of the form -l, -lr, -s, -st or -p"
-                )
 
     # Tokenize
     tokens = nltk.word_tokenize(content)
@@ -132,17 +128,22 @@ try:
     # Sorting the tokens according to their count
     sorted_word_count = sorted(word_count.items(), key=lambda kv: kv[1], reverse=True)
 
-    # print("Number of tokens : " + str(sum(word_count.values())))      # Uncomment if you want to check the number of tokens remaining after preprocessing
+    # print("Number of tokens : " + str(sum(word_count.values())))  # Uncomment if you want to check the number of tokens remaining after preprocessing
 
     # Creating two arrays which would be used to plot data
     first_tokens = []
     first_count = []
     last_tokens = []
     last_count = []
+    all_tokens = []
+    all_count = []
 
     iterator_for_last_count = 0
 
     for token, count in sorted_word_count:
+        all_tokens.append(token)
+        all_count.append(count)
+
         if len(first_tokens) < 25:
             first_tokens.append(token)
 
@@ -188,6 +189,16 @@ try:
     plt.xticks(rotation=45, ha="right")
     plt.show()
 
+    # Plotting the data for the all words log scaled
+    plt.figure(figsize=(13, 8))
+    plt.bar(all_tokens, all_count)
+    plt.title("Word frequency for all words log scaled", fontsize=14)
+    plt.xlabel("Tokens", fontsize=8)
+    plt.ylabel("Frequency", fontsize=8)
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.xticks(rotation=45, ha="right")
+    plt.show()
 
 except FileNotFoundError:
     print("Error: File not found. Please check the file path.")
