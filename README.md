@@ -1,5 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/axpepi8Q)
-
 ## Files
 
 - **dracula-novel.txt**: The full text of Bram Stoker’s Dracula downloaded from Project Gutenberg which serves as the input text file.
@@ -10,7 +8,7 @@
 
 You can inform the person running the code with a clear and concise message like this:
 
-## Prerequisites:
+## Prerequisites
 
 1. **Python 3.10** or higher is required for compatibility with the `match...case` syntax, which was introduced in **Python 3.10**.
 2. **NLTK** (Natural Language Toolkit) must be installed on your machine. You can install it via `pip`:
