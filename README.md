@@ -6,7 +6,7 @@
 - **README.md**: Provides an explanation for how to run the code and the files existing in this folder.
 - **Report.pdf**: Serves as a detailed project report.
 
-## Project Overview and Report
+## Project Overview
 
 This project includes a normalize_text.py module that performs text preprocessing tasks. While it's currently tailored to work within this specific repository and not configured to handle arbitrary inputs out of the box, it can be easily adapted to process any text file with minimal changes, primarily by modifying the input parsing logic. The module has been successfully tested on a sample dataset from **Project Gutenberg**, and the results are documented in the accompanying `Report.pdf`, which also provides a comprehensive breakdown of the design decisions, preprocessing steps, and implementation details.
 
